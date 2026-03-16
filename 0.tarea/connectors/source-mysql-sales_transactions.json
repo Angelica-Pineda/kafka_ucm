@@ -1,0 +1,27 @@
+{
+  "name": "source-mysql-sales_transactions",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "tasks.max": "1",
+    "connection.url": "jdbc:mysql://mysql:3306/db?user=user&password=password&useSSL=false",
+    "table.whitelist": "sales_transactions",
+    "mode": "timestamp",
+    "timestamp.column.name": "timestamp",
+    "timestamp.delay.interval.ms":5000 ,
+    "poll.interval.ms": 3600000,
+    "validate.non.null": "false",
+    "topic.prefix": "mysql-",
+    "numeric.mapping": "best_fit",
+    "transforms": "createKey,extractKey,route",
+    "transforms.createKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+    "transforms.createKey.fields": "transaction_id",
+    "transforms.extractKey.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+    "transforms.extractKey.field": "transaction_id",
+    "transforms.route.type": "org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.route.regex": "mysql-sales_transactions",
+    "transforms.route.replacement": "sales-transactions",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081"
+  }
+}
