@@ -13,6 +13,7 @@ import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Produced;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
@@ -64,11 +65,9 @@ public class SensorAlerterApp {
         return builder.build();
     }
 
-    public static void main(String[] args) {
-        Properties props = new Properties();
-        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "sensor-alerter-v2");
-        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put("schema.registry.url", "http://localhost:8081");
+    public static void main(String[] args) throws IOException {
+        Properties props = ConfigLoader.getProperties();
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, "sensor-alerter-app");
 
         KafkaStreams streams = new KafkaStreams(createTopology(), props);
         streams.start();
