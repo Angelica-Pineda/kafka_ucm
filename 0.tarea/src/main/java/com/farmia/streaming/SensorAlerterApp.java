@@ -1,16 +1,4 @@
-package com.farmia.streaming;
 
-import java.io.IOException;
-
-public class SensorAlerterApp {
-
-    public static void main(String[] args) throws IOException {
-
-    }
-}
-
-
-/*
 package com.farmia.streaming;
 
 import com.farmia.iot.SensorTelemetry;
@@ -55,7 +43,6 @@ public class SensorAlerterApp {
                     String type;
                     String details;
 
-                    // Aplicamos la lógica de categorías solicitada
                     if (val.getTemperature() > 35) {
                         type = "HIGH_TEMPERATURE";
                         details = "Temperature exceed 35ºC";
@@ -87,4 +74,4 @@ public class SensorAlerterApp {
         streams.start();
         Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
     }
-}*/
+}
