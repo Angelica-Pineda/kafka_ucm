@@ -1,0 +1,15 @@
+{
+  "name": "mongodb-sink-alerts-v2",
+  "config": {
+    "connector.class": "com.mongodb.kafka.connect.MongoSinkConnector",
+    "tasks.max": "1",
+    "topics": "sensor-alerts",
+    "connection.uri": "mongodb://mongodb:27017",
+    "database": "farmia",
+    "collection": "sensor_alerts",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter.enhanced.avro.schema.support": "true"
+  }
+}

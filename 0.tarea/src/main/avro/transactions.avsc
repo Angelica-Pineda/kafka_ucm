@@ -1,6 +1,6 @@
 {
   "namespace": "com.farmia.sales",
-  "name": "SalesTransaction",
+  "name": "sales_transactions",
   "type": "record",
   "fields": [
     { "name": "transaction_id", "type": "string" },

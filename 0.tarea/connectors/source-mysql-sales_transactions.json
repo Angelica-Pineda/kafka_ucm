@@ -1,5 +1,5 @@
 {
-  "name": "source-mysql-sales_transactions",
+  "name": "source-mysql-sales_transactions-v2",
   "config": {
     "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
     "tasks.max": "1",
@@ -14,9 +14,9 @@
     "numeric.mapping": "best_fit",
     "transforms": "createKey,extractKey,route",
     "transforms.createKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
-    "transforms.createKey.fields": "transaction_id",
+    "transforms.createKey.fields": "category",
     "transforms.extractKey.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
-    "transforms.extractKey.field": "transaction_id",
+    "transforms.extractKey.field": "category",
     "transforms.route.type": "org.apache.kafka.connect.transforms.RegexRouter",
     "transforms.route.regex": "mysql-sales_transactions",
     "transforms.route.replacement": "sales-transactions",
