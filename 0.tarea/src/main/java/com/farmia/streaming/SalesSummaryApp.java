@@ -34,25 +34,20 @@ public class SalesSummaryApp {
 
         StreamsBuilder builder = new StreamsBuilder();
 
-        // 1. Consumimos el stream (Ahora la Key ya es un String con la categoría)
         KStream<String, sales_transactions> sales = builder.stream(inputTopic,
                 Consumed.with(Serdes.String(), salesSerde));
 
-        // 2. Agrupamos directamente por la clave (groupByKey)
         sales
                 .groupByKey(Grouped.with(Serdes.String(), salesSerde))
 
-                // 3. Definimos la ventana de 1 minuto (Tumbling Window)
                 .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMinutes(1)))
 
-                // 4. Agregamos las ventas sumando el precio (que es double)
                 .aggregate(
                         () -> 0.0,
                         (key, value, aggregate) -> aggregate + value.getPrice(),
                         Materialized.with(Serdes.String(), Serdes.Double())
                 )
 
-                // 5. Convertimos el resultado al objeto Avro SalesSummary
                 .toStream()
                 .map((windowedKey, total) -> {
                     return KeyValue.pair(windowedKey.key(),
@@ -63,9 +58,8 @@ public class SalesSummaryApp {
                                     .setWindowEnd(windowedKey.window().end())
                                     .build());
                 })
-                // Peek para depurar en consola
                 .peek((key, summary) -> System.out.println("Categoría: " + key + " | Total Ventas: " + summary.getTotalSales()))
-                // Enviamos al topic final
+
                 .to(outputTopic, Produced.with(Serdes.String(), summarySerde));
 
         return builder.build();
@@ -73,7 +67,6 @@ public class SalesSummaryApp {
 
     public static void main(String[] args) throws IOException {
         Properties props = ConfigLoader.getProperties();
-        // Importante: Cambia el ID de la aplicación para que empiece de cero tras el cambio de lógica
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "sales-summary-app-v6");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(StreamsConfig.STATE_DIR_CONFIG, "C:/kafka-temp/sales-summary-v6");
