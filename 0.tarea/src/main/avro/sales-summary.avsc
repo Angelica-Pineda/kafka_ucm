@@ -4,6 +4,7 @@
   "type": "record",
   "fields": [
     { "name": "category", "type": "string" },
+    { "name": "total_quantity", "type": "int" },
     { "name": "total_sales", "type": "double" },
     { "name": "window_start", "type": "long" },
     { "name": "window_end", "type": "long" }
